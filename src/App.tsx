@@ -41,38 +41,43 @@ function App() {
     getCats()
   }, [])
 
-  const filterCats =  cats && cats.filter(elem => elem.isliked === true)
 
-  const targetArray = cats && filterCats && (page === 'All' ? [...cats] : [...filterCats])
-
-  const catElem = targetArray && targetArray.map(elem =>{
+  const catElem = cats && cats.map(elem =>{
     return(
-      <Card key={elem.id} id={elem.id} img={elem.url} isLiked={Math.random() < 0.5 ? true : false} />
+      <Card key={elem.id} id={elem.id} img={elem.url} isLiked={elem.isliked ? elem.isliked : false} handleLike={handleLike}/>
     )
   })
 
-  const imgSize = 225
-  const gapSize = 10
-  console.log(2*imgSize+gapSize)
+  const filterCats =  catElem && catElem.filter(elem => elem.props.isLiked === true)
+
+  function handleLike(e: React.MouseEvent<HTMLButtonElement>){
+    const id = e.currentTarget.id
+    setCats(() => {
+      return(
+        cats?.map(elem => {
+          if (elem.id === id){
+            return {...elem, isliked: !elem.isliked}
+          }
+          return elem
+        })
+      )
+    })
+  }
 
   return (
     <div>
-      <Header handleClick={(type: 'All' | 'Liked') => setPage(type)}/>
+      <Header handleClick={(type: 'All' | 'Liked') => setPage(type)} type={page}/>
       <div className={`
         grid
-        grid-cols-[repeat(1,_${imgSize}px)] w-[${imgSize}px]
-        sm:grid-cols-[repeat(2,_${imgSize}px)] sm:w-[${2*imgSize+gapSize}px]
-        md:grid-cols-[repeat(3,_${imgSize}px)] md:w-[${3*imgSize+2*gapSize}px]
-        lg:grid-cols-[repeat(4,_${imgSize}px)] lg:w-[${4*imgSize+3*gapSize}px]
-        gap-[${gapSize}px] mx-auto`}>
-        {cats && catElem}
+        grid-cols-[repeat(auto-fit,225px)]
+        w-full
+        mx-auto
+        justify-center
+        gap-[20px]
+      `}>
+        {(cats && catElem) && page === "All" ? catElem : filterCats}
       </div>
     </div>
-  
-    
-
-
-
   )
 }
 
