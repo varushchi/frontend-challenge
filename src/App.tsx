@@ -92,12 +92,14 @@ function App() {
     <div className='min-w-[360px]'>
       <Header handleClick={(type: 'All' | 'Liked') => setPage(type)} type={page}/>
       <div className={`
+        mt-[112px]
+        mb-[48px]
         grid
         grid-cols-[repeat(auto-fit,225px)]
         w-full
         mx-auto
         justify-center
-        gap-[20px]
+        gap-[48px]
       `}>
         {(cats && catElem) && page === "All" ? catElem : (likedCatsElem && likedCatsElem.length > 0 ? likedCatsElem : <p> любимых котиков нет</p>)}
       </div>
