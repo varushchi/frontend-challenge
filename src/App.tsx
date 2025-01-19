@@ -27,6 +27,7 @@ function App() {
   }
 
   const [cats, setCats] = useState<APIResponse[] | null>()
+  const [likedCats, setLikedCats] = useState<{id: string, url: string, isLiked?: true}[] | undefined>(JSON.parse(localStorage.getItem('likedCats') || '""') !== null ? JSON.parse(localStorage.getItem('likedCats') || '""') : [])
   const [page, setPage] = useState<'All' | 'Liked'>('All')
 
   useEffect(() => {
@@ -41,6 +42,11 @@ function App() {
     getCats()
   }, [])
 
+  useEffect(() => {
+    localStorage.setItem('likedCats', JSON.stringify(likedCats))
+    console.log('sdsdfsdfsfsfsf')
+  },[likedCats])
+
 
   const catElem = cats && cats.map(elem =>{
     return(
@@ -48,24 +54,42 @@ function App() {
     )
   })
 
-  const filterCats =  catElem && catElem.filter(elem => elem.props.isLiked === true)
+  const likedCatsElem = likedCats && likedCats.map(elem => {
+    return(
+      <Card key={elem.id} id={elem.id} img={elem.url} isLiked={true} handleLike={handleLike} />
+    )
+  })  
 
   function handleLike(e: React.MouseEvent<HTMLButtonElement>){
     const id = e.currentTarget.id
+    let flagIdNotfound = true
     setCats(() => {
       return(
         cats?.map(elem => {
           if (elem.id === id){
+            flagIdNotfound = false
+            if (elem.isliked !== true){
+              setLikedCats([{id: elem.id, url: elem.url, isLiked: true}, ...(likedCats || [])])
+            }
+            else{
+              setLikedCats(likedCats?.filter(filterElem => filterElem.id !== id))
+            }
             return {...elem, isliked: !elem.isliked}
           }
           return elem
         })
       )
     })
+
+    if (flagIdNotfound){
+      setLikedCats(likedCats?.filter(elem => elem.id !== id))
+    }
   }
 
+  
+
   return (
-    <div>
+    <div className='min-w-[360px]'>
       <Header handleClick={(type: 'All' | 'Liked') => setPage(type)} type={page}/>
       <div className={`
         grid
@@ -75,7 +99,7 @@ function App() {
         justify-center
         gap-[20px]
       `}>
-        {(cats && catElem) && page === "All" ? catElem : filterCats}
+        {(cats && catElem) && page === "All" ? catElem : (likedCatsElem && likedCatsElem.length > 0 ? likedCatsElem : <p> любимых котиков нет</p>)}
       </div>
     </div>
   )
