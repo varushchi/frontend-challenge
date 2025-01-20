@@ -68,4 +68,4 @@ Error generating stack: `+u.message+`
         justify-center
         items-center
         gap-[48px]
-      `,children:[j==="All"&&P&&Re,j==="Liked"&&Oe,he.jsx("div",{ref:le})]}),he.jsx("div",{className:"text-[14px] w-[195px] mx-auto",children:H&&he.jsx("p",{children:"... загружаем еще котиков ..."})})]})}Uc.createRoot(document.getElementById("root")).render(he.jsx(gn.StrictMode,{children:he.jsx($c,{})}));
+      `,children:[j==="All"&&P&&Re,j==="Liked"&&Oe,he.jsx("div",{ref:le})]}),he.jsx("div",{className:"text-[14px] w-[195px] mx-auto",children:H&&j==="All"&&he.jsx("p",{children:"... загружаем еще котиков ..."})})]})}Uc.createRoot(document.getElementById("root")).render(he.jsx(gn.StrictMode,{children:he.jsx($c,{})}));
