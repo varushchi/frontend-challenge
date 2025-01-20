@@ -138,7 +138,7 @@ function App() {
         {page === 'Liked' && likedCatsElem}
         <div ref={observerRef}></div>
       </div>
-      <div className='text-[14px] w-[195px] mx-auto'>{loading && <p>... загружаем еще котиков ...</p>}</div>
+      <div className='text-[14px] w-[195px] mx-auto'>{loading && page === 'All' && <p>... загружаем еще котиков ...</p>}</div>
     </div>
   )
 }
